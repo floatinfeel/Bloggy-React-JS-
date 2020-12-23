@@ -4,8 +4,10 @@ import Form from './components/Form'
 import Locations from './components/Locations'
 import {useDispatch} from 'react-redux'
 import {readData} from './actions/locations'
+import Map from './components/Map'
 
 function App() {
+  
 
   const [currentId, setCurrentId] = useState(null)
 
@@ -15,21 +17,23 @@ function App() {
     dispatch(readData())
   }, [currentId, dispatch])
 
+
   return (
     <div className="App">
      <h1>Show Map</h1>
      <div className="map-api">
-
+       <Map 
+       />
      </div>
      <div className="data-form">
-     <Form
-      currentId={currentId}
-      setCurrentId={setCurrentId}
-     />
-     <Locations
+      <Form
         currentId={currentId}
         setCurrentId={setCurrentId}
-     />
+      />
+      <Locations
+          currentId={currentId}
+          setCurrentId={setCurrentId}
+      />
      </div>
 
     </div>

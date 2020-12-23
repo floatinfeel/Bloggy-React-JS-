@@ -1,35 +1,35 @@
 import React from 'react'
-import { withGoogleMap, GoogleMap, withScriptjs, InfoWindow, Marker } from "react-google-maps";
-import Autocomplete from 'react-google-autocomplete';
-import Geocode from "react-geocode";
+import {useSelector} from 'react-redux'
+import { compose, withProps } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+const Map = () => {
+    const locations = useSelector((state) => state.locations)
 
-
-const { MarkerWithLabel } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
-
-Geocode.setApiKey("AIzaSyDGe5vjL8wBmilLzoJ0jNIwe9SAuH2xS_0");
-Geocode.enableDebug();
-
-class Map extends React.Component{
-    render(){
-        const MapWithAMarker = withScriptjs(withGoogleMap(props =>
-            <GoogleMap
-              defaultZoom={8}
-              defaultCenter={{ lat: -34.397, lng: 150.644 }}
-            >
-              <Marker
-                position={{ lat: -34.397, lng: 150.644 }}
-              />
-            </GoogleMap>
-          ));
-        return(
-            <MapWithAMarker
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGe5vjL8wBmilLzoJ0jNIwe9SAuH2xS_0&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-            />
-        )
-    }
+    const MyMapComponent = compose(
+        withProps({
+          googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
+          loadingElement: <div style={{ height: `100%` }} />,
+          containerElement: <div style={{ height: `400px` }} />,
+          mapElement: <div style={{ height: `100%` }} />,
+        }),
+        withScriptjs,
+        withGoogleMap
+      )((props) =>
+        <GoogleMap
+          defaultZoom={8}
+          defaultCenter={{lat: -34.397, lng: 150.644}}
+        >
+          {
+              props.isMarkerShown && locations.map((location, id)=>( <Marker position={{ lat: location.lat, lng: location.lng }} key={location.id} clickable={true}/>
+            ))
+          }
+        </GoogleMap>
+      )
+    return (
+        <div>
+            <MyMapComponent isMarkerShown />
+        </div>
+    )
 }
 
 export default Map
