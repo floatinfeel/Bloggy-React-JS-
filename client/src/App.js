@@ -4,7 +4,6 @@ import Form from './components/Form'
 import Locations from './components/Locations'
 import {useDispatch} from 'react-redux'
 import {readData} from './actions/locations'
-import Map from './components/Map'
 
 function App() {
   
@@ -21,10 +20,6 @@ function App() {
   return (
     <div className="App">
      <h1>Show Map</h1>
-     <div className="map-api">
-       <Map 
-       />
-     </div>
      <div className="data-form">
       <Form
         currentId={currentId}
