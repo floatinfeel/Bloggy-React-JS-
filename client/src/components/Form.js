@@ -57,7 +57,7 @@ const Form = ({currentId, setCurrentId}) => {
                 <label htmlFor="lng">Longitude</label><br/>
                 <input type="text" value={postLocations.lng} onChange={(e) => setPostLocations({...postLocations, lng: e.target.value})} placeholder="ex: 10.703.0123" /><br/><br/>
 
-                <Button variant="contained" color="primary" type="submit">Submit Location</Button> 
+                <Button variant="contained" color="primary" type="submit">Submit</Button> 
                 &nbsp;
                 <Button variant="contained" color="secondary" size="small" onClick={clear}>
                     Clear
