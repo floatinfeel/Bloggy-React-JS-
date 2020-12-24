@@ -10,28 +10,28 @@ import {editData, deleteData} from '../actions/locations'
 const Locations = ({setCurrentId}) => {
     const dispatch = useDispatch()
     const locations = useSelector((state)=> state.locations)
-    const [sortData, setSortData] = useState('')
     const [search, setSearch] = useState('')
+    const [sortType, setSortType] = ('asc')
     const [filteredData, setFilteredData] = useState([])
 
-    const selectChange = (e) =>{
-      setSortData(e.target.value)
+
+    const sortHandler = () =>{
+      // setSortType(
+      //   filteredData.sort( (a, b)=>{
+      //     let isReversed = (sortType === 'asc') ? 1 : -1
+      //       return isReversed = a.locations.label.localCompare(b.locations.label)
+      //   } )
+      // )
     }
 
 
     useEffect(()=>{
       setFilteredData( 
         locations.filter( location =>{
-          return location.label.toLowerCase().includes( search.toLowerCase() )
+          return location.label.toLowerCase().includes( search.toLowerCase() ) ||
+          location.kota.toLowerCase().includes( search.toLowerCase() ) ||
+          location.provinsi.toLowerCase().includes( search.toLowerCase() )
         }) 
-        && 
-        locations.filter( location =>{
-          return location.kota.toLowerCase().includes( search.toLowerCase() )
-        })
-        &&
-        locations.filter( location =>{
-          return location.provinsi.toLowerCase().includes( search.toLowerCase() )
-        })
       )
     }, [search, locations])
 
@@ -41,7 +41,7 @@ const Locations = ({setCurrentId}) => {
           <label htmlFor="sort"> <h5>Search Data: </h5> </label>
           <input 
             type="text" 
-            placeholder="ex: Bundaran or Jawa Barat" 
+            placeholder="search label or kota or provinsi" 
             style={{height: '31px', width: '200px'}}
             onChange={e=> setSearch(e.target.value)} 
           /> 
@@ -51,8 +51,8 @@ const Locations = ({setCurrentId}) => {
           <Select
             labelId="select-sort"
             id="sort-id"
-            value={sortData}
-            onChange={selectChange}
+            value={sortType}
+            onChange={sortHandler}
           >
             <MenuItem value={"asc"}>ASC</MenuItem>
             <MenuItem value={"desc"}>DESC</MenuItem>
