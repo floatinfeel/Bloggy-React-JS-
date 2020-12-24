@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
 import {Table} from 'react-bootstrap'
 import {Button, Select, MenuItem} from '@material-ui/core'
 import './Locations.css'
@@ -11,17 +10,18 @@ const Locations = ({setCurrentId}) => {
     const dispatch = useDispatch()
     const locations = useSelector((state)=> state.locations)
     const [search, setSearch] = useState('')
-    const [sortType, setSortType] = ('asc')
+    const [sortType, setSortType] = useState('asc')
     const [filteredData, setFilteredData] = useState([])
 
 
-    const sortHandler = () =>{
-      // setSortType(
-      //   filteredData.sort( (a, b)=>{
-      //     let isReversed = (sortType === 'asc') ? 1 : -1
-      //       return isReversed = a.locations.label.localCompare(b.locations.label)
-      //   } )
-      // )
+    const sortHandler = (e) =>{
+      
+      setSortType(e.target.value)
+      filteredData.sort( (a, b)=>{
+
+        let isReversed = (sortType === 'asc') ? -1 : 1
+        return isReversed * a.label.localeCompare(b.label)
+      })
     }
 
 
