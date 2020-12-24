@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {Table} from 'react-bootstrap'
-import {Button} from '@material-ui/core'
+import {Button, Select, MenuItem} from '@material-ui/core'
 import './Locations.css'
 import {useSelector, useDispatch} from 'react-redux'
 import {editData, deleteData} from '../actions/locations'
@@ -10,12 +10,59 @@ import {editData, deleteData} from '../actions/locations'
 const Locations = ({setCurrentId}) => {
     const dispatch = useDispatch()
     const locations = useSelector((state)=> state.locations)
-    
+    const [sortData, setSortData] = useState('')
+    const [search, setSearch] = useState('')
+    const [filteredData, setFilteredData] = useState([])
+
+    const selectChange = (e) =>{
+      setSortData(e.target.value)
+    }
+
+
+    useEffect(()=>{
+      setFilteredData( 
+        locations.filter( location =>{
+          return location.label.toLowerCase().includes( search.toLowerCase() )
+        }) 
+        && 
+        locations.filter( location =>{
+          return location.kota.toLowerCase().includes( search.toLowerCase() )
+        })
+        &&
+        locations.filter( location =>{
+          return location.provinsi.toLowerCase().includes( search.toLowerCase() )
+        })
+      )
+    }, [search, locations])
 
     return (
       <div>
-        <h1>Data Location</h1>
+        <div className="feature-data">
+          <label htmlFor="sort"> <h5>Search Data: </h5> </label>
+          <input 
+            type="text" 
+            placeholder="ex: Bundaran or Jawa Barat" 
+            style={{height: '31px', width: '200px'}}
+            onChange={e=> setSearch(e.target.value)} 
+          /> 
+            &nbsp; 
+          <br/> <br/>
+          <label htmlFor="sort"> <h5>Sort Data By: </h5> </label>
+          <Select
+            labelId="select-sort"
+            id="sort-id"
+            value={sortData}
+            onChange={selectChange}
+          >
+            <MenuItem value={"asc"}>ASC</MenuItem>
+            <MenuItem value={"desc"}>DESC</MenuItem>
+          </Select> 
+        </div>
+
+        
+        
         <div className="tabeldata">
+          <h1>Data Location</h1>
           <Table striped bordered hover size="sm" border="1">
             <thead>
               <tr>
@@ -29,7 +76,7 @@ const Locations = ({setCurrentId}) => {
             </thead>
             <tbody>
               {
-                locations.map((location, id)=>(
+                filteredData.map((location, id)=>(
                   <tr key={location.id}>
                     <td> {location.label} </td>
                     <td> {location.kota} </td>
@@ -41,7 +88,7 @@ const Locations = ({setCurrentId}) => {
                       <Button variant="contained" color="secondary" onClick={()=> dispatch(deleteData(location.id)) }> Delete </Button>
                     </td>
                   </tr> 
-                ))
+                )) 
               }
             </tbody>
           </Table>
