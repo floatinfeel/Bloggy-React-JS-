@@ -10,7 +10,7 @@ const Locations = ({setCurrentId}) => {
     const dispatch = useDispatch()
     const locations = useSelector((state)=> state.locations)
     const [search, setSearch] = useState('')
-    const [sortType, setSortType] = useState('asc')
+    const [sortType, setSortType] = useState('')
     const [filteredData, setFilteredData] = useState([])
 
 

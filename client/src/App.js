@@ -8,6 +8,13 @@ import MapComponent from './components/MapComponent'
 
 function App() {
   const [currentId, setCurrentId] = useState(null)
+  const [postLocations, setPostLocations] = useState({
+    label: '',
+    kota: '',
+    provinsi: '',
+    lat: 0,
+    lng: 0,
+  })
   const dispatch = useDispatch()
   
   useEffect(()=>{
@@ -25,6 +32,8 @@ function App() {
           <Form
             currentId={currentId}
             setCurrentId={setCurrentId}
+            postLocations={postLocations}
+            setPostLocations={setPostLocations}
           />
           <Locations
               currentId={currentId}

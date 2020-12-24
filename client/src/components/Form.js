@@ -3,14 +3,8 @@ import {Button} from '@material-ui/core'
 import {useDispatch, useSelector} from 'react-redux'
 import {createData, updateData} from '../actions/locations'
 
-const Form = ({currentId, setCurrentId}) => {
-    const [postLocations, setPostLocations] = useState({
-        label: '',
-        kota: '',
-        provinsi: '',
-        lat: 0,
-        lng: 0,
-      })
+const Form = ({currentId, setCurrentId, postLocations, setPostLocations}) => {
+    
     const dispatch = useDispatch()
     //get data for update in form
     const location =  useSelector((state) => currentId ? state.locations.find((loc) => loc.id === currentId) : null )
@@ -37,6 +31,8 @@ const Form = ({currentId, setCurrentId}) => {
         setCurrentId(null)
         setPostLocations({ label: '', kota: '', provinsi: '', lat: 0, lng: 0, });
     }
+
+    
 
     return (
         <div>
